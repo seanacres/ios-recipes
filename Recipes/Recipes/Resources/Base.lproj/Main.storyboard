@@ -24,13 +24,13 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
-                                    <action selector="searchTextEditingDidEnd:" destination="dU4-WR-7zF" eventType="editingDidEnd" id="mpO-K6-835"/>
+                                    <action selector="searchTextEditEnded:" destination="dU4-WR-7zF" eventType="editingDidEndOnExit" id="gFd-oh-H5Q"/>
                                 </connections>
                             </textField>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A7O-Ks-r6J">
                                 <rect key="frame" x="0.0" y="134" width="375" height="533"/>
                                 <connections>
-                                    <segue destination="lo7-OJ-04f" kind="embed" identifier="RecipeTableView" id="3lj-Be-jU2"/>
+                                    <segue destination="lo7-OJ-04f" kind="embed" identifier="showRecipeTableView" id="3lj-Be-jU2"/>
                                 </connections>
                             </containerView>
                         </subviews>
