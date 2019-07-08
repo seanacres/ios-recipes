@@ -12,6 +12,7 @@ class RecipeDetailViewController: UIViewController {
 
     @IBOutlet weak var recipeName: UILabel!
     @IBOutlet weak var recipeInstructions: UITextView!
+    var recipeController: RecipeController?
     
     var recipe: Recipe? {
         didSet {
@@ -21,6 +22,7 @@ class RecipeDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        recipeInstructions.delegate = self
         updateViews()
     }
     
@@ -30,14 +32,19 @@ class RecipeDetailViewController: UIViewController {
         recipeInstructions.text = recipe.instructions
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @IBAction func saveChangesTapped(_ sender: Any) {
+        guard let recipeController = recipeController, let recipe = recipe else { return }
+        recipeController.updateRecipe(for: recipe, newInstructions: recipeInstructions.text)
+        navigationController?.popViewController(animated: true)
     }
-    */
+}
 
+extension RecipeDetailViewController: UITextViewDelegate {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if (text == "\n") {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
 }

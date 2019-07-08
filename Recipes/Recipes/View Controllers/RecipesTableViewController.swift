@@ -15,6 +15,7 @@ class RecipesTableViewController: UITableViewController {
             tableView.reloadData()
         }
     }
+    var recipeController: RecipeController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,8 +39,9 @@ class RecipesTableViewController: UITableViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ShowRecipeDetail" {
-            guard let recipeDetailVC = segue.destination as? RecipeDetailViewController, let indexPath = tableView.indexPathForSelectedRow else { return }
+            guard let recipeDetailVC = segue.destination as? RecipeDetailViewController, let indexPath = tableView.indexPathForSelectedRow, let recipeController = recipeController else { return }
             recipeDetailVC.recipe = recipes[indexPath.row]
+            recipeDetailVC.recipeController = recipeController
         }
         
     }

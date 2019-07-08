@@ -23,7 +23,8 @@ class RecipeController {
             let data = try Data(contentsOf: url)
             let decoder = PropertyListDecoder()
             let decodedRecipes = try decoder.decode([Recipe].self, from: data)
-            completion(decodedRecipes, nil)
+            self.recipes = decodedRecipes
+            completion(recipes, nil)
             print("loaded recipes from store")
         } catch {
             fetchRecipes { (recipes, error) in
@@ -73,5 +74,11 @@ class RecipeController {
                 return
             }
             }.resume()
+    }
+    
+    func updateRecipe(for recipe: Recipe, newInstructions: String) {
+        guard let index = recipes.firstIndex(of: recipe) else { return }
+        recipes[index].instructions = newInstructions
+        saveToPersistentStore()
     }
 }

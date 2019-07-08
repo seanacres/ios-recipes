@@ -34,7 +34,9 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar.delegate = self
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         recipeController.loadRecipes { (recipes, error) in
             if let error = error {
                 NSLog("error loading recipes: \(error)")
@@ -60,6 +62,7 @@ class MainViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "RecipeTableViewEmbed" {
             recipesTableViewController = segue.destination as? RecipesTableViewController
+            recipesTableViewController?.recipeController = recipeController
         }
     }
 }
