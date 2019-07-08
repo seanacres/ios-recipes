@@ -21,13 +21,13 @@ class MainViewController: UIViewController {
     
     var recipesTableViewController: RecipesTableViewController? {
         didSet {
-            recipesTableViewController?.recipes = self.filteredRecipes
+            recipesTableViewController?.recipes = filteredRecipes
         }
     }
     
     var filteredRecipes: [Recipe] = [] {
         didSet {
-            recipesTableViewController?.recipes = self.filteredRecipes
+            recipesTableViewController?.recipes = filteredRecipes
         }
     }
     
