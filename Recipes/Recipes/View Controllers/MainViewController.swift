@@ -12,27 +12,61 @@ class MainViewController: UIViewController {
 
     @IBOutlet weak var searchBar: UISearchBar!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+    let networkClient = RecipesNetworkClient()
+    var allRecipes: [Recipe] = [] {
+        didSet {
+            filterRecipes()
+        }
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    var recipesTableViewController: RecipesTableViewController? {
+        didSet {
+            self.recipesTableViewController?.recipes = filteredRecipes
+        }
     }
-    */
 
+    var filteredRecipes: [Recipe] = [] {
+        didSet {
+            recipesTableViewController?.recipes = self.filteredRecipes
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        searchBar.delegate = self
+        
+        networkClient.fetchRecipes { (recipes, error) in
+            if let error = error {
+                NSLog("error fetching recipes: \(error)")
+            } else {
+                guard let recipes = recipes else { return }
+                DispatchQueue.main.async {
+                    self.allRecipes = recipes
+                }
+            }
+        }
+    }
+    
+    private func filterRecipes() {
+        guard let searchTerm = searchBar.text, searchTerm != "" else {
+            filteredRecipes = allRecipes
+            return
+        }
+        
+        filteredRecipes = allRecipes.filter({ $0.name.contains(searchTerm) || $0.instructions.contains(searchTerm)})
+    }
+    
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "RecipeTableViewEmbed" {
+            recipesTableViewController = segue.destination as? RecipesTableViewController
+        }
+    }
 }
 
 extension MainViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
+        filterRecipes()
+        resignFirstResponder()
     }
 }
