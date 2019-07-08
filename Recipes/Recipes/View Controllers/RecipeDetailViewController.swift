@@ -10,9 +10,11 @@ import UIKit
 
 class RecipeDetailViewController: UIViewController {
 
+    @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var recipeName: UILabel!
     @IBOutlet weak var recipeInstructions: UITextView!
     var recipeController: RecipeController?
+    let imageHandler = ImageHandler()
     
     var recipe: Recipe? {
         didSet {
@@ -30,6 +32,17 @@ class RecipeDetailViewController: UIViewController {
         guard let recipe = recipe, isViewLoaded else { return }
         recipeName.text = recipe.name
         recipeInstructions.text = recipe.instructions
+        getImage(recipeName: recipe.name)
+    }
+    
+    func getImage(recipeName: String) {
+        imageHandler.searchImage(for: recipeName) { (result) in
+            if let image = try? result.get() {
+                DispatchQueue.main.async {
+                    self.imageView.image = image
+                }
+            }
+        }
     }
     
     @IBAction func saveChangesTapped(_ sender: Any) {
