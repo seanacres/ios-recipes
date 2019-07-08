@@ -32,6 +32,8 @@ class RecipeDetailViewController: UIViewController {
         guard let recipe = recipe, isViewLoaded else { return }
         recipeName.text = recipe.name
         recipeInstructions.text = recipe.instructions
+        imageView.layer.cornerRadius = 10
+        imageView.clipsToBounds = true
         getImage(recipeName: recipe.name)
     }
     
