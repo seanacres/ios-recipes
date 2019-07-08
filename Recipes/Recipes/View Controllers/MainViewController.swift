@@ -12,7 +12,7 @@ class MainViewController: UIViewController {
 
     @IBOutlet weak var searchBar: UISearchBar!
     
-    let networkClient = RecipesNetworkClient()
+    let recipeController = RecipeController()
     var allRecipes: [Recipe] = [] {
         didSet {
             filterRecipes()
@@ -35,9 +35,9 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         searchBar.delegate = self
         
-        networkClient.fetchRecipes { (recipes, error) in
+        recipeController.loadRecipes { (recipes, error) in
             if let error = error {
-                NSLog("error fetching recipes: \(error)")
+                NSLog("error loading recipes: \(error)")
             } else {
                 guard let recipes = recipes else { return }
                 DispatchQueue.main.async {
