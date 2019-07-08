@@ -67,6 +67,6 @@ class MainViewController: UIViewController {
 extension MainViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         filterRecipes()
-        resignFirstResponder()
+        searchBar.endEditing(true)
     }
 }

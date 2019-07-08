@@ -21,8 +21,7 @@ class RecipeDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        updateViews()
     }
     
     func updateViews() {
@@ -30,6 +29,7 @@ class RecipeDetailViewController: UIViewController {
         recipeName.text = recipe.name
         recipeInstructions.text = recipe.instructions
     }
+    
     /*
     // MARK: - Navigation
 
