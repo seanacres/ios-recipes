@@ -9,13 +9,14 @@
 import Foundation
 
 class RecipeController {
+    static let recipesFetchURL = URL(string: "https://lambdacookbook.vapor.cloud/recipes")!
+    
     var recipes: [Recipe] = []
     var recipesURL: URL? {
         let fileManager = FileManager.default
         guard let documents = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
         return documents.appendingPathComponent("Recipes.plist")
     }
-    static let recipesURL = URL(string: "https://lambdacookbook.vapor.cloud/recipes")!
     
     func loadRecipes(completion: @escaping ([Recipe]?, Error?) -> Void) {
         do {
@@ -55,7 +56,7 @@ class RecipeController {
     }
     
     func fetchRecipes(completion: @escaping ([Recipe]?, Error?) -> Void) {
-        URLSession.shared.dataTask(with: RecipeController.recipesURL) { (data, _, error) in
+        URLSession.shared.dataTask(with: RecipeController.recipesFetchURL) { (data, _, error) in
             if let error = error {
                 completion(nil, error)
                 return
